@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { DashboardPage } from '../../pages/DashboardPage';
 
 test('cadastrar um novo curso', async ({ page }) => {
+    const dashboardPage = new DashboardPage(page);
+    await dashboardPage.goto();
+    await dashboardPage.goToCursos();
+
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/dashboard/);
     await page.getByRole('button', { name: 'Turmas' }).click();
