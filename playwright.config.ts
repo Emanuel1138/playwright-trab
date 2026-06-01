@@ -37,6 +37,19 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
 
+    {
+      name: 'setup',
+      testMatch: /auth\.setup\.ts/
+    },
+
+    {
+      name: 'chromium',
+      use: {
+        storageState: 'playwright/.authuser.json'
+      },
+      dependencies: ['setup']
+    }
+
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
