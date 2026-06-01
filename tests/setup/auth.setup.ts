@@ -20,6 +20,9 @@ setup('realizar login de usuário a partir de suas credenciais', async ({ page }
     await page.getByRole('textbox', { name: 'Código de verificação de 6 dí' }).fill(code);
     await page.getByRole('button', { name: 'Verificar código de autentica' }).click();
 
+     
+    await expect(page).toHaveURL(/dashboard/);
+
     await page.context().storageState({
         path: 'playwright/.auth/user.json'
     });
