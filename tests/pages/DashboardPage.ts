@@ -26,4 +26,9 @@ export class DashboardPage {
     await this.page.getByRole('link', { name: 'Áreas' }).click();
     await expect(this.page).toHaveURL(/areas/);
   }
+
+  async goToAvaliacoes() {
+    await this.page.getByRole('link', { name: 'Avaliações' }).click();
+    await expect(this.page).toHaveURL(/avaliacoes/);
+  }
 }
