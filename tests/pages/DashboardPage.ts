@@ -14,5 +14,10 @@ export class DashboardPage {
     await this.page.getByRole('link', { name: 'Cursos' }).click();
     await expect(this.page).toHaveURL(/cursos/);
   }
+  async goToTurmas() {
+    await this.page.getByRole('button', { name: 'Turmas' }).click();
+    await this.page.getByRole('link', { name: 'Turmas' }).click();
+    await expect(this.page).toHaveURL(/turmas/);
+  }
 
 }
