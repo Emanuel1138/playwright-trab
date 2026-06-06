@@ -47,3 +47,20 @@ test('editar um curso', async ({ page }) => {
     await expect(page.getByText('Bacharelado')).toBeVisible();
 });
 
+test('excluir um curso', async ({ page }) => {
+    const dashboardPage = new DashboardPage(page);
+    await dashboardPage.goto();
+    await dashboardPage.goToCursos();
+
+    await page.getByRole('textbox', { name: 'Pesquisar curso...' }).fill(newCursoName);
+    await expect(page.getByText(newCursoName)).toBeVisible();
+    await page.getByRole('button', { name: 'Excluir' }).click();
+    await expect(page.getByText('Tem certeza que deseja')).toBeVisible();
+    await page.getByRole('button', { name: 'Excluir' }).click();
+
+    await expect(page.getByText('Curso excluído com sucesso')).toBeVisible();
+
+    await page.getByRole('textbox', { name: 'Pesquisar curso...' }).fill(newCursoName);
+    await expect(page.getByText(newCursoName)).not.toBeVisible();
+});
+
