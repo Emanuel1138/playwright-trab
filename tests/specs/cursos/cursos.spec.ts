@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { DashboardPage } from '../../pages/DashboardPage';
+import { DashboardPage } from '../../../pages/DashboardPage';
 
 const cursoName = `curso_${Date.now()}`;
 const newCursoName = `${cursoName}_edited`;
