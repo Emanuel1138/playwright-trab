@@ -16,3 +16,13 @@ test('cadastrar um novo curso', async ({ page }) => {
 
     await expect(page.getByText('Curso salvo com sucesso')).toBeVisible();
 });
+
+test('exibir curso', async ({ page }) => {
+    const dashboardPage = new DashboardPage(page);
+    await dashboardPage.goto();
+    await dashboardPage.goToCursos();
+
+    await page.getByRole('button', { name: 'ID' }).click();
+    await page.getByText('Desc').click();
+    await expect(page.getByText(cursoName)).toBeVisible();
+});
