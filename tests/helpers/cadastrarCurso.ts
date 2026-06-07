@@ -1,10 +1,9 @@
 import { Page } from '@playwright/test';
-import { DashboardPage } from '../pages/DashboardPage';
+import { CursosPage } from '../pages/CursosPage';
 
 export async function cadastrarCurso(page: Page, nomeCurso: string, nivelCurso: string) {
-    const dashboard = new DashboardPage(page);
-    await dashboard.goto();
-    await dashboard.goToCursos();
+    const cursos = new CursosPage(page);
+    await cursos.goto();
 
     await page.getByRole('button', { name: 'Adicionar Curso' }).click();
     await page.getByRole('textbox', { name: 'Nome do Curso: *' }).fill(nomeCurso);

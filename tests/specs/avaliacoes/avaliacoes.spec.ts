@@ -15,12 +15,11 @@ async function navegarParaAvaliacoes(page: Page) {
 
 test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
-        
-    await cadastrarCurso(page, nomeCurso, 'Licenciatura');
-    await cadastrarTurma(page, nomeCurso);
-    await cadastrarArea(page, nomeArea);
-
-    await page.close();
+    try {
+        await cadastrarCurso(page, nomeCurso, 'Licenciatura');
+    } finally {
+        await page.close();
+    }
 });
 
 test('cadastrar uma nova avaliação', async ({ page }) => { 

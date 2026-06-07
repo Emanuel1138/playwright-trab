@@ -1,10 +1,10 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import { DashboardPage } from '../pages/DashboardPage';
 
 export async function cadastrarTurma(page: Page, nomeCurso: string,) {
-    const dashboard = new DashboardPage(page);
-    await dashboard.goto();
-    await dashboard.goToTurmas();
+    // const dashboard = new DashboardPage(page);
+    // await dashboard.goto();
+    // await dashboard.goToTurmas();
   
     await page.getByRole('button', { name: 'Adicionar nova turma' }).click();
 
@@ -19,7 +19,9 @@ export async function cadastrarTurma(page: Page, nomeCurso: string,) {
     await page.getByRole('combobox', { name: 'Turno: campo obrigatório' }).click();
     await page.getByRole('option', { name: 'Integral' }).click();
 
-    await page.getByRole('textbox', { name: 'Sala:' }).fill('07');
+    // await page.getByRole('textbox', { name: 'Sala:' }).fill('07');
 
     await page.getByRole('button', { name: 'Salvar' }).click();
+
+    await expect(page.getByText('Turma salva com sucesso')).toBeVisible();
 }
