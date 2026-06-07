@@ -1,87 +1,99 @@
-import { test, expect, Page } from '@playwright/test';
-import { DashboardPage } from '../../pages/DashboardPage';
+import { test, expect } from '@playwright/test';
 
-const cursoName = `curso_${Date.now()}`;
-const newCursoName = `${cursoName}_edited`;
-
-async function navegarParaCursos(page: Page) {
-    const dashboardPage = new DashboardPage(page);
-    await dashboardPage.goto();
-    await dashboardPage.goToCursos();
-}
-
-async function pesquisarCurso(page: Page, nome: string) {
-    await page.getByRole('textbox', { name: 'Pesquisar curso...' }).fill(nome);
-}
-
-async function preencherFormulario(page: Page, nome: string, nivel: string) {
-    await page.getByRole('textbox', { name: 'Nome do Curso: *' }).fill(nome);
-    await page.getByRole('button', { name: 'Nível de Escolaridade' }).click();
-    await page.getByRole('option', { name: nivel }).click();
-    await page.getByRole('button', { name: 'Salvar' }).click();
-}
-
-test('cadastrar um novo curso', async ({ page }) => {
-    await test.step('Navegar para a página de cursos', () => 
-        navegarParaCursos(page));
-
-    await test.step('Preencher e salvar formulário de cadastro', async () => {
-        await page.getByRole('button', { name: 'Adicionar Curso' }).click();
-        await preencherFormulario(page, cursoName, 'Licenciatura');
-    });
-
-    await test.step('Verificar texto de sucesso', async () => {
-        await expect(page.getByText('Curso salvo com sucesso')).toBeVisible();
-    });
+test('CRUD - Curso', async ({ page }) => {
+  await page.goto('https://app.avaliei.com.br/dashboard');
+  await expect(page).toHaveURL(/dashboard/);
+  await page.getByRole('button', { name: 'Turmas' }).hover();
+  await page.getByRole('link', { name: 'Cursos' }).click();
+  await page.getByRole('button', { name: 'Adicionar Curso' }).click();
+  await page.getByRole('textbox', { name: 'Nome do Curso: *' }).fill('Marketing');
+  await page.getByRole('button', { name: 'Nível de Escolaridade' }).click();
+  await page.getByRole('option', { name: 'Bacharelado' }).click();
+  await page.getByRole('button', { name: 'Salvar' }).click();
+  await expect(page.getByText('Curso salvo com sucesso')).toBeVisible();
+  await page.getByRole('textbox', { name: 'Pesquisar curso...' }).fill('Marketing');
+  await expect(page.getByRole('row', { name: /Marketing/ })).toBeVisible();
+  await page.getByRole('row', { name: /Marketing/ }).getByRole('button', { name: 'Editar' }).click();
+  await page.getByRole('textbox', { name: 'Nome do Curso: *' }).fill('marketing');
+  await page.getByRole('button', { name: 'Salvar' }).click();
+  await expect(page.getByText('Curso salvo com sucesso')).toBeVisible();
+  await page.getByRole('row', { name: /marketing/ }).getByRole('button', { name: 'Excluir' }).click();
+  await page.getByRole('button', { name: 'Excluir' }).click();
+  await expect(page.getByText('Curso excluído com sucesso')).toBeVisible();
 });
 
-test('exibir curso', async ({ page }) => {
-    await test.step('Navegar para a página de cursos', () => 
-        navegarParaCursos(page));
-
-    await test.step('Pesquisar e verificar curso', async () => {
-        await pesquisarCurso(page, cursoName);
-        await expect(page.getByText(cursoName)).toBeVisible();
-        await expect(page.getByText('Licenciatura')).toBeVisible();
-    });
+test('Deve permitir criar e editar curso válido', async ({ page }) => {
+  await page.goto('/dashboard');
+  await page.getByRole('button', { name: 'Turmas' }).hover();
+  await page.getByRole('link', { name: 'Cursos' }).click();
+  await page.getByRole('button', { name: 'Adicionar Curso' }).click();
+  await page.getByRole('textbox', { name: 'Nome do Curso: *' }).fill('Letras');
+  await page.getByRole('button', { name: 'Nível de Escolaridade' }).click();
+  await page.getByRole('option', { name: 'Licenciatura' }).click();
+  await page.getByRole('button', { name: 'Salvar' }).click();
+  await expect(page.getByText('Curso salvo com sucesso')).toBeVisible();
+  await page.getByRole('textbox', { name: 'Pesquisar curso...' }).fill('Letras');
+  await expect(page.getByRole('row', { name: /Letras/ })).toBeVisible();
+  await page.getByRole('row', { name: /Letras/ }).getByRole('button', { name: 'Excluir' }).click();
+  await page.getByRole('button', { name: 'Excluir' }).click();
+  await expect(page.getByText('Curso excluído com sucesso')).toBeVisible();
 });
 
-test('editar um curso', async ({ page }) => {
-    await test.step('Navegar para a página de cursos', () => 
-        navegarParaCursos(page));
 
-    await test.step('Pesquisar e abrir formulário de edição', async () => {
-        await pesquisarCurso(page, cursoName);
-        await expect(page.getByText(cursoName)).toBeVisible();
-        await page.getByRole('button', { name: 'Editar' }).click();
-    });
-
-    await test.step('Editar e salvar formulário', () =>
-        preencherFormulario(page, newCursoName, 'Bacharelado')
-    );
-
-    await test.step('Verificar alterações', async () => {
-        await expect(page.getByText('Curso salvo com sucesso')).toBeVisible();
-        await expect(page.getByText(newCursoName)).toBeVisible();
-        await expect(page.getByText('Bacharelado')).toBeVisible();
-    });
+test('Não deve permitir criar curso sem preencher o nome', async ({ page }) => {
+  await page.goto('/dashboard');
+  await page.getByRole('button', { name: 'Turmas' }).hover();
+  await page.getByRole('link', { name: 'Cursos' }).click();
+  await page.getByRole('button', { name: 'Adicionar Curso' }).click();
+  await page.getByRole('button', { name: 'Nível de Escolaridade' }).click();
+  await page.getByRole('option', { name: 'Pós-Graduação' }).click();
+  await page.getByRole('button', { name: 'Salvar' }).click();
+  await expect(page.getByText('Este campo é obrigatório')).toBeVisible();
+  await page.getByRole('button', { name: 'Close' }).click();
 });
 
-test('excluir um curso', async ({ page }) => {
-    await test.step('Navegar para a página de cursos', () => 
-        navegarParaCursos(page));
+test('Não deve permitir cadastrar curso com nome já existente', async ({ page }) => {
+  await page.goto('/dashboard');
+  await page.getByRole('button', { name: 'Turmas' }).hover();
+  await page.getByRole('link', { name: 'Cursos' }).click();
+  await page.getByRole('button', { name: 'Adicionar Curso' }).click();
+  await page.getByRole('textbox', { name: 'Nome do Curso: *' }).fill('curso 202606061936');
+  await page.getByRole('button', { name: 'Nível de Escolaridade' }).click();
+  await page.getByRole('option', { name: 'Médio' }).click();
+  await page.getByRole('button', { name: 'Salvar' }).click();
+  await expect(page.getByText('O campo nome do curso já está sendo utilizado')).toBeVisible();
+});
 
-    await test.step('Pesquisar e excluir curso', async () => {
-        await pesquisarCurso(page, newCursoName);
-        await expect(page.getByText(newCursoName)).toBeVisible();
-        await page.getByRole('button', { name: 'Excluir' }).click();
-        await expect(page.getByText('Tem certeza que deseja')).toBeVisible();
-        await page.getByRole('button', { name: 'Excluir' }).click();
-    });
+test('Deve permitir cadastrar curso com nome de 1 caractere', async ({ page }) => {
+  await page.goto('/dashboard');
+  await page.getByRole('button', { name: 'Turmas' }).hover();
+  await page.getByRole('link', { name: 'Cursos' }).click();
+  await page.getByRole('button', { name: 'Adicionar Curso' }).click();
+  await page.getByRole('textbox', { name: 'Nome do Curso: *' }).fill('w');
+  await page.getByRole('button', { name: 'Nível de Escolaridade' }).click();
+  await page.getByRole('option', { name: 'Licenciatura' }).click();
+  await page.getByRole('button', { name: 'Salvar' }).click();
+  await expect(page.getByText('Curso salvo com sucesso')).toBeVisible();
+  await page.getByRole('textbox', { name: 'Pesquisar curso...' }).fill('w');
+  await expect(page.getByRole('row', { name: /^w/ })).toBeVisible();
+  await page.getByRole('row', { name: /^w/ }).getByRole('button', { name: 'Excluir' }).click();
+  await page.getByRole('button', { name: 'Excluir' }).click();
+  await expect(page.getByText('Curso excluído com sucesso')).toBeVisible();
+});
 
-    await test.step('Verificar exclusão', async () => {
-        await expect(page.getByText('Curso excluído com sucesso')).toBeVisible();
-        await pesquisarCurso(page, newCursoName);
-        await expect(page.getByText(newCursoName)).not.toBeVisible();
-    });
+test('Deve permitir cadastrar curso com nome de 125 caracteres', async ({ page }) => {
+  await page.goto('/dashboard');
+  await page.getByRole('button', { name: 'Turmas' }).hover();
+  await page.getByRole('link', { name: 'Cursos' }).click();
+  await page.getByRole('button', { name: 'Adicionar Curso' }).click();
+  await page.getByRole('textbox', { name: 'Nome do Curso: *' }).fill('Curso avançado de programação web com foco em boas práticas de desenvolvimento e arquitetura de sistemas modernos e web hoje!');
+  await page.getByRole('button', { name: 'Nível de Escolaridade' }).click();
+  await page.getByRole('option', { name: 'Licenciatura' }).click();
+  await page.getByRole('button', { name: 'Salvar' }).click();
+  await expect(page.getByText('Curso salvo com sucesso')).toBeVisible();
+  await page.getByRole('textbox', { name: 'Pesquisar curso...' }).fill('curso avançado');
+  await expect(page.getByRole('row', { name: /Curso avançado/ })).toBeVisible();
+  await page.getByRole('row', { name: /Curso avançado/ }).getByRole('button', { name: 'Excluir' }).click();
+  await page.getByRole('button', { name: 'Excluir' }).click();
+  await expect(page.getByText('Curso excluído com sucesso')).toBeVisible();
 });
