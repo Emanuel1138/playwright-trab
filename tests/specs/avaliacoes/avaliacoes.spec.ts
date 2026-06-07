@@ -1,17 +1,11 @@
 import { test, expect, Page } from '@playwright/test';
-import { DashboardPage } from '../../pages/DashboardPage';
+import { AvaliacoesPage } from '../../pages/AvaliacoesPage';
 import { cadastrarCurso } from '../../helpers/cadastrarCurso';
 import { cadastrarArea } from '../../helpers/cadastrarArea';
 import { cadastrarTurma } from '../../helpers/cadastrarTurma';
 
 const nomeCurso = `curso_${Date.now()}`;
 const nomeArea = `area_${Date.now()}`;
-
-async function navegarParaAvaliacoes(page: Page) {
-    const dashboardPage = new DashboardPage(page);
-    await dashboardPage.goto();
-    await dashboardPage.goToAvaliacoes();
-}
 
 test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
@@ -24,5 +18,6 @@ test.beforeAll(async ({ browser }) => {
 });
 
 test('cadastrar uma nova avaliação', async ({ page }) => { 
-    await navegarParaAvaliacoes(page);
+    const avaliacoes = new AvaliacoesPage(page);
+    await avaliacoes.goto();
 });
