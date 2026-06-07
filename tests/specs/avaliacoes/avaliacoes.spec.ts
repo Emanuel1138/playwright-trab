@@ -17,6 +17,7 @@ test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
     try {
         await cadastrarCurso(page, nomeCurso, 'Licenciatura');
+        await cadastrarTurma(page, nomeCurso);
     } finally {
         await page.close();
     }

@@ -1,10 +1,9 @@
 import { Page, expect } from '@playwright/test';
-import { DashboardPage } from '../pages/DashboardPage';
+import { TurmasPage } from '../pages/TurmasPage';
 
 export async function cadastrarTurma(page: Page, nomeCurso: string,) {
-    // const dashboard = new DashboardPage(page);
-    // await dashboard.goto();
-    // await dashboard.goToTurmas();
+    const turmas = new TurmasPage(page);
+    await turmas.goto();
   
     await page.getByRole('button', { name: 'Adicionar nova turma' }).click();
 
