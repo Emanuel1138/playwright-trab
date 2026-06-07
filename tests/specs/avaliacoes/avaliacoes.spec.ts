@@ -1,7 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
-import { AvaliacoesPage } from '../../pages/AvaliacoesPage';
+import { AvaliacoesPage } from '../../pages/avaliacoes/AvaliacoesPage';
 import { cadastrarCurso } from '../../helpers/cadastrarCurso';
-import { cadastrarArea } from '../../helpers/cadastrarArea';
 import { cadastrarTurma } from '../../helpers/cadastrarTurma';
 
 const nomeCurso = `curso_${Date.now()}`;
