@@ -30,4 +30,18 @@ export class AreasPage {
 
         await expect(this.page.getByText('Área salva com sucesso')).toBeVisible();
     }
+
+    async excluirArea(nomeArea: string) {
+        await this.page.getByRole('textbox', { name: 'Pesquisar área...' }).fill(nomeArea);
+
+        await expect(this.page.getByText(nomeArea)).toBeVisible();
+
+        await this.page.getByRole('button', { name: 'Excluir' }).click();
+
+        await expect(this.page.getByText('Tem certeza que deseja excluir')).toBeVisible();
+
+        await this.page.getByRole('button', { name: 'Excluir' }).click();
+
+        await expect(this.page.getByText('Área excluída com sucesso')).toBeVisible();
+    }
 }
