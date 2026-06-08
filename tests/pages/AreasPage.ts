@@ -9,6 +9,11 @@ export class AreasPage {
         await expect(this.page).toHaveURL(/areas/);
     }
 
+    async pesquisarArea(nomeArea: string) {
+        await this.page.getByRole('textbox', { name: 'Pesquisar área...' }).fill(nomeArea);
+        await expect(this.page.getByText(nomeArea)).toBeVisible();
+    }
+
     async cadastrarArea(nomeArea: string) {
         await this.page.getByRole('button', { name: 'Adicionar área' }).click();
         
@@ -18,10 +23,7 @@ export class AreasPage {
         await expect(this.page.getByText('Área salva com sucesso')).toBeVisible();
     }
 
-    async editarArea(nomeArea: string, nomeAreaEditada: string) {
-        await this.page.getByRole('textbox', { name: 'Pesquisar área...' }).fill(nomeArea);
-
-        await expect(this.page.getByText(nomeArea)).toBeVisible();
+    async editarArea(nomeAreaEditada: string) {
 
         await this.page.getByRole('button', { name: 'Editar' }).click();
 
@@ -31,10 +33,7 @@ export class AreasPage {
         await expect(this.page.getByText('Área salva com sucesso')).toBeVisible();
     }
 
-    async excluirArea(nomeArea: string) {
-        await this.page.getByRole('textbox', { name: 'Pesquisar área...' }).fill(nomeArea);
-
-        await expect(this.page.getByText(nomeArea)).toBeVisible();
+    async excluirArea() {
 
         await this.page.getByRole('button', { name: 'Excluir' }).click();
 

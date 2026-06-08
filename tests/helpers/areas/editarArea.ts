@@ -6,5 +6,7 @@ export async function editarArea(page: Page, nomeArea: string, nomeAreaEditada: 
 
     await areas.goto();
 
-    await areas.editarArea(nomeArea, nomeAreaEditada);
+    await areas.pesquisarArea(nomeArea);
+
+    await areas.editarArea(nomeAreaEditada);
 }

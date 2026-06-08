@@ -6,5 +6,7 @@ export async function deletarArea(page: Page, nomeArea: string) {
 
     await areas.goto();
 
-    await areas.excluirArea(nomeArea);
+    await areas.pesquisarArea(nomeArea);
+
+    await areas.excluirArea();
 }
