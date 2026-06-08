@@ -8,4 +8,13 @@ export class AvaliacoesPage {
         await this.page.goto('/avaliacoes');
         await expect(this.page).toHaveURL(/avaliacoes/);
     }
+
+    async abrirEdicao(nomeAvaliacao: string) {
+        await this.page.getByRole('textbox', { name: 'Pesquisar' }).fill(nomeAvaliacao);
+        await this.page.getByRole('button', { name: 'Aplicar' }).click();
+        await this.page.getByRole('button', { name: 'Mais Ações' }).click();
+        await this.page.getByRole('menuitem', { name: 'Editar' }).click();
+
+        await expect(this.page).toHaveURL(/avaliacoes\/editar\/\d+/);
+    }
 }
