@@ -6,6 +6,7 @@ import { editarAvaliacao } from '../../helpers/avaliacoes/editarAvaliacao';
 
 const nomeCurso = `curso_${Date.now()}`;
 const avaliacaoDescricao = `descricao_${Date.now()}`;
+const avaliacaoDescricaoEditada = avaliacaoDescricao + '_edited';
 
 test.beforeAll(async ({ browser }) => {
     const page = await browser.newPage();
@@ -22,5 +23,5 @@ test('cadastrar uma nova avaliação', async ({ page }) => {
 });
 
 test('editar uma avaliação cadastrada', async ({ page }) => {
-    await editarAvaliacao(page, avaliacaoDescricao);
+    await editarAvaliacao(page, avaliacaoDescricaoEditada);
 });
