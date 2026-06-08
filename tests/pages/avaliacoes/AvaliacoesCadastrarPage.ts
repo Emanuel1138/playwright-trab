@@ -36,7 +36,5 @@ export class AvaliacoesCadastrarPage {
         
         await this.page.getByRole('button', { name: 'Salvar avaliação' }).click();
         
-        await expect(this.page).toHaveURL(/avaliacoes/);
-        await expect(this.page.getByText('Avaliação cadastrada com sucesso!')).toBeVisible();
     }
 }

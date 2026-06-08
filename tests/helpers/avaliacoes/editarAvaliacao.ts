@@ -6,8 +6,10 @@ export async function editarAvaliacao(page: Page, avaliacaoDescricao: string, av
     const avaliacoes = new AvaliacoesPage(page);
     const avaliacoesEditar = new AvaliacoesEditarPage(page);
 
-    await avaliacoes.goto()
-    ;
+    await avaliacoes.goto();
+    
+    await avaliacoes.pesquisarAvaliacao(avaliacaoDescricao);
+
     await avaliacoes.abrirEdicao(avaliacaoDescricao);
 
     await avaliacoesEditar.preencherFormulario(avaliacaoDescricaoEditada);

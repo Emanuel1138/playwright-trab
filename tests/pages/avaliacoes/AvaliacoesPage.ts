@@ -9,9 +9,14 @@ export class AvaliacoesPage {
         await expect(this.page).toHaveURL(/avaliacoes/);
     }
 
-    async abrirEdicao(avaliacaoDescricao: string) {
+    async pesquisarAvaliacao(avaliacaoDescricao: string) {
         await this.page.getByRole('textbox', { name: 'Pesquisar' }).fill(avaliacaoDescricao);
         await this.page.getByRole('button', { name: 'Aplicar' }).click();
+
+        await expect(this.page.getByText(avaliacaoDescricao)).toBeVisible();
+    }
+
+    async abrirEdicao(avaliacaoDescricao: string) {
         await this.page.getByRole('button', { name: 'Mais Ações' }).click();
         await this.page.getByRole('menuitem', { name: 'Editar' }).click();
 
@@ -19,8 +24,6 @@ export class AvaliacoesPage {
     }
 
     async excluirAvaliacao(avaliacaoDescricao: string) {
-        await this.page.getByRole('textbox', { name: 'Pesquisar' }).fill(avaliacaoDescricao);
-        await this.page.getByRole('button', { name: 'Aplicar' }).click();
         await this.page.getByRole('button', { name: 'Mais Ações' }).click();
         await this.page.getByRole('menuitem', { name: 'Excluir' }).click();
         await this.page.getByRole('button', { name: 'Excluir' }).click();
