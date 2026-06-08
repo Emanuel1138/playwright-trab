@@ -3,6 +3,7 @@ import { cadastrarAvaliacao } from '../../helpers/avaliacoes/cadastrarAvaliacao'
 import { cadastrarCurso } from '../../helpers/cadastrarCurso';
 import { cadastrarTurma } from '../../helpers/cadastrarTurma';
 import { editarAvaliacao } from '../../helpers/avaliacoes/editarAvaliacao';
+import { excluirAvaliacao } from '../../helpers/avaliacoes/excluirAvaliacao';
 
 const nomeCurso = `curso_${Date.now()}`;
 const avaliacaoDescricao = `descricao_${Date.now()}`;
@@ -23,5 +24,9 @@ test('cadastrar uma nova avaliação', async ({ page }) => {
 });
 
 test('editar uma avaliação cadastrada', async ({ page }) => {
-    await editarAvaliacao(page, avaliacaoDescricaoEditada);
+    await editarAvaliacao(page, avaliacaoDescricao, avaliacaoDescricaoEditada);
+});
+
+test('excluir uma avaliação cadastrada', async ({ page }) => {
+    await excluirAvaliacao(page, avaliacaoDescricaoEditada);
 });

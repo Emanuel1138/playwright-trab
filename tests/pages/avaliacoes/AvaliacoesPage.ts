@@ -25,6 +25,6 @@ export class AvaliacoesPage {
         await this.page.getByRole('menuitem', { name: 'Excluir' }).click();
         await this.page.getByRole('button', { name: 'Excluir' }).click();
 
-        await expect(this.page.getByText('Avaliação excluída com sucesso!')).toBeVisible();
+        await expect(this.page.getByText('Avaliação excluída com sucesso')).toBeVisible();
     }
 }
